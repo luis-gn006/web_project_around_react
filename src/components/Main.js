@@ -1,5 +1,17 @@
 import profileAvatar from "../images/profile__image.jpg";
 
+function handleEditAvatarClick() {
+  document
+    .querySelector(".popup-profile-avatar")
+    .classList.add("popup__opened");
+}
+function handleEditProfileClick() {
+  document.querySelector(".popup-profile").classList.add("popup__opened");
+}
+function handleAddPlaceClick() {
+  document.querySelector(".popup-elements").classList.add("popup__opened");
+}
+
 function Main() {
   return (
     <>
@@ -12,19 +24,27 @@ function Main() {
                 alt="imagen de perfil"
                 class="profile__avatar"
               />
-              <button class="profile__avatar-edit"></button>
+              <button
+                onClick={handleEditAvatarClick}
+                class="profile__avatar-edit"
+              ></button>
             </div>
             <div class="profile__info">
               <div class="profile__name-content">
                 <h3 class="profile__name">Jacques Cousteau</h3>
-                <button class="profile__button-edit"></button>
+                <button
+                  onClick={handleEditProfileClick}
+                  class="profile__button-edit"
+                ></button>
               </div>
               <p class="profile__job">Explorador</p>
             </div>
           </div>
 
           <div class="profile__column-right">
-            <button class="profile__button-add">+</button>
+            <button onClick={handleAddPlaceClick} class="profile__button-add">
+              +
+            </button>
           </div>
         </section>
 
