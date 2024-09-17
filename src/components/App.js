@@ -38,6 +38,11 @@ function App() {
     api.getInitialCards().then((cards) => setCards(cards));
   }, []);
 
+  const funcDeleteCard = (cardName) => {
+    const filterCards = cards.filter((item) => item.name !== cardName);
+    setCards(filterCards);
+  };
+
   return (
     <div className="page">
       <Header />
@@ -107,6 +112,7 @@ function App() {
               name={item.name}
               likes={item.likes.length}
               key={item._id}
+              handleDeleteCard={funcDeleteCard}
             />
           );
         })}

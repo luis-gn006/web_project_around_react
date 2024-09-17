@@ -1,9 +1,13 @@
-function Card({ url, name, likes }) {
+function Card({ url, name, likes, handleDeleteCard }) {
+  const deleteCard = () => {
+    handleDeleteCard(name);
+  };
+
   return (
     <div className="element">
       <div className="element__image-content">
         <img src={url} alt={`imagen de ${name}`} className="element__image" />
-        <button className="element__button-trash"></button>
+        <button className="element__button-trash" onClick={deleteCard}></button>
       </div>
       <div className="element__footer">
         <p className="element__name">{name}</p>
