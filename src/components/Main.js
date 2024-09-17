@@ -1,6 +1,21 @@
+import { useState, useEffect } from "react";
 import profileAvatar from "../images/profile__image.jpg";
+import api from "../utils/Api.js";
 
 function Main({ onEditAvatarClick, onEditProfileClick, onAddElementClick }) {
+  const [userName, setUserName] = useState([]);
+  const [userDescription, setUserDescription] = useState([]);
+  const [userAvatar, setUserAvatar] = useState([]);
+
+  useEffect(() => {
+    api.getUserInfo().then((user) => setUserAvatar(user.avatar));
+  }, []);
+  useEffect(() => {
+    api.getUserInfo().then((user) => setUserDescription(user.about));
+  }, []);
+  useEffect(() => {
+    api.getUserInfo().then((user) => setUserName(user.name));
+  }, []);
   return (
     <>
       <main>
@@ -8,7 +23,7 @@ function Main({ onEditAvatarClick, onEditProfileClick, onAddElementClick }) {
           <div className="profile__column-left">
             <div className="profile__avatar-container">
               <img
-                src={profileAvatar}
+                src={userAvatar}
                 alt="imagen de perfil"
                 className="profile__avatar"
               />
@@ -19,13 +34,17 @@ function Main({ onEditAvatarClick, onEditProfileClick, onAddElementClick }) {
             </div>
             <div className="profile__info">
               <div className="profile__name-content">
-                <h3 className="profile__name">Jacques Cousteau</h3>
+                <h3 className="profile__name">{`${
+                  !userName.length == 0 ? userName : "Cargando..."
+                }`}</h3>
                 <button
                   onClick={onEditProfileClick}
                   className="profile__button-edit"
                 ></button>
               </div>
-              <p className="profile__job">Explorador</p>
+              <p className="profile__job">{`${
+                !userDescription.length == 0 ? userDescription : "Cargando..."
+              }`}</p>
             </div>
           </div>
 
