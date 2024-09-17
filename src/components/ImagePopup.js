@@ -1,11 +1,25 @@
-function ImagePopup({ title, src }) {
+function ImagePopup({ selectedCard, onClose, isOpen }) {
+  if (!selectedCard) {
+    return null;
+  }
   return (
     <>
-      <section className="popup popup-image-fullscreen">
+      <section
+        className={`popup popup-image-fullscreen ${
+          isOpen ? "popup__opened" : " "
+        }`}
+      >
         <div className="popup__container-image">
-          <button className="popup__close-button popup__close-image"></button>
-          <img src={src} alt={`imagen de ${title}`} className="popup__image" />
-          <h5 className="popup__title-image">{title}</h5>
+          <button
+            className="popup__close-button popup__close-image"
+            onClick={onClose}
+          ></button>
+          <img
+            src={selectedCard.link}
+            alt={`imagen de ${selectedCard.name}`}
+            className="popup__image"
+          />
+          <h5 className="popup__title-image">{selectedCard.name}</h5>
         </div>
       </section>
     </>

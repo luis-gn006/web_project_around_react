@@ -4,6 +4,7 @@ import api from "../utils/Api";
 import Header from "./Header";
 import Main from "./Main";
 import PopupWithForm from "./PopupWithForm";
+import ImagePopup from "./ImagePopup";
 import Elements from "./Elements";
 import Footer from "./Footer";
 import Card from "./Card";
@@ -30,6 +31,7 @@ function App() {
     setEditAvatarPopupOpen(false);
     setEditProfilePopupOpen(false);
     setAddElementPopupOpen(false);
+    setImagePopupOpen(false);
   };
 
   const [cards, setCards] = useState([]);
@@ -41,6 +43,13 @@ function App() {
   const funcDeleteCard = (cardName) => {
     const filterCards = cards.filter((item) => item.name !== cardName);
     setCards(filterCards);
+  };
+
+  const [isImagePopupOpen, setImagePopupOpen] = useState(false);
+  const [selectedCard, setSelectedCard] = useState([]);
+  const funcSelectCard = (card) => {
+    setSelectedCard(card);
+    setImagePopupOpen(true);
   };
 
   return (
@@ -108,15 +117,24 @@ function App() {
         {cards.map((item) => {
           return (
             <Card
+              card={item}
               url={item.link}
               name={item.name}
               likes={item.likes.length}
               key={item._id}
               handleDeleteCard={funcDeleteCard}
+              handleSelectedCard={funcSelectCard}
             />
           );
         })}
       </Elements>
+      {selectedCard && (
+        <ImagePopup
+          selectedCard={selectedCard}
+          onClose={closeAllPopups}
+          isOpen={isImagePopupOpen}
+        />
+      )}
 
       <PopupWithForm
         name={"delete-card"}
