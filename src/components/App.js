@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "../pages/index.css";
+import api from "../utils/Api";
 import Header from "./Header";
 import Main from "./Main";
 import PopupWithForm from "./PopupWithForm";
 import Elements from "./Elements";
 import Footer from "./Footer";
+import Card from "./Card";
 
 function App() {
   const [isEditAvatarPopupOpen, setEditAvatarPopupOpen] = useState(false);
@@ -29,6 +31,13 @@ function App() {
     setEditProfilePopupOpen(false);
     setAddElementPopupOpen(false);
   };
+
+  const [cards, setCards] = useState([]);
+
+  useEffect(() => {
+    api.getInitialCards().then((cards) => setCards(cards));
+  }, []);
+
   return (
     <div className="page">
       <Header />
@@ -90,7 +99,18 @@ function App() {
         <div className="popup__line popup__line-job"></div>
         <span className="popup__input-error job-error"></span>
       </PopupWithForm>
-      <Elements />
+      <Elements>
+        {cards.map((item) => {
+          return (
+            <Card
+              url={item.link}
+              name={item.name}
+              likes={item.likes.length}
+              key={item._id}
+            />
+          );
+        })}
+      </Elements>
 
       <PopupWithForm
         name={"delete-card"}

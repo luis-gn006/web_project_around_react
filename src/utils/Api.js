@@ -16,7 +16,9 @@ class Api {
         }
         return Promise.reject(`Error: ${response.status}`);
       })
-      .catch((error) => console.error("Error", error));
+      .catch((error) => {
+        console.log(error);
+      });
   }
   getInitialCards() {
     return fetch(`${this.url}/cards`, {

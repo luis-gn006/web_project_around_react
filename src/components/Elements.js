@@ -1,11 +1,7 @@
-function Elements() {
+function Elements({ children }) {
   return (
     <>
-      <section className="elements">
-        <div className="spinner">
-          <i className="spinner__i"></i>
-        </div>
-      </section>
+      <section className="elements">{children}</section>
     </>
   );
 }

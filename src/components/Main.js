@@ -16,6 +16,7 @@ function Main({ onEditAvatarClick, onEditProfileClick, onAddElementClick }) {
   useEffect(() => {
     api.getUserInfo().then((user) => setUserName(user.name));
   }, []);
+
   return (
     <>
       <main>
@@ -23,7 +24,7 @@ function Main({ onEditAvatarClick, onEditProfileClick, onAddElementClick }) {
           <div className="profile__column-left">
             <div className="profile__avatar-container">
               <img
-                src={userAvatar}
+                src={`${!userAvatar.length == 0 ? userAvatar : profileAvatar}`}
                 alt="imagen de perfil"
                 className="profile__avatar"
               />
