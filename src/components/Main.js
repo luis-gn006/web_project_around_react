@@ -7,6 +7,7 @@ function Main({ onEditAvatarClick, onEditProfileClick, onAddElementClick }) {
   const [userDescription, setUserDescription] = useState([]);
   const [userAvatar, setUserAvatar] = useState([]);
 
+  //Cargar información del usuario
   useEffect(() => {
     api.getUserInfo().then((user) => setUserAvatar(user.avatar));
   }, []);

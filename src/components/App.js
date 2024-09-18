@@ -10,6 +10,7 @@ import Footer from "./Footer";
 import Card from "./Card";
 
 function App() {
+  //Popups
   const [isEditAvatarPopupOpen, setEditAvatarPopupOpen] = useState(false);
   const handleEditAvatarClick = () => {
     setEditAvatarPopupOpen(true);
@@ -18,15 +19,16 @@ function App() {
   const handleEditProfileClick = () => {
     setEditProfilePopupOpen(true);
   };
+  /*
   const [isConfirmDeletePopupOpen, setConfirmDeletePopupOpen] = useState(false);
   const handleConfirmDeleteClick = () => {
     setConfirmDeletePopupOpen(true);
   };
+  */
   const [isAddElementPopupOpen, setAddElementPopupOpen] = useState(false);
   const handleAddElementClick = () => {
     setAddElementPopupOpen(true);
   };
-
   const closeAllPopups = () => {
     setEditAvatarPopupOpen(false);
     setEditProfilePopupOpen(false);
@@ -34,17 +36,19 @@ function App() {
     setImagePopupOpen(false);
   };
 
+  //Cards
   const [cards, setCards] = useState([]);
-
+  //Cargar tarjetas
   useEffect(() => {
     api.getInitialCards().then((cards) => setCards(cards));
   }, []);
-
+  //Borrar tarjetas (solo en local , no en api)
   const funcDeleteCard = (cardName) => {
     const filterCards = cards.filter((item) => item.name !== cardName);
     setCards(filterCards);
   };
 
+  //Popup imagen
   const [isImagePopupOpen, setImagePopupOpen] = useState(false);
   const [selectedCard, setSelectedCard] = useState([]);
   const funcSelectCard = (card) => {
@@ -130,6 +134,7 @@ function App() {
       </Elements>
       {selectedCard && (
         <ImagePopup
+          name={"image-fullscreen"}
           selectedCard={selectedCard}
           onClose={closeAllPopups}
           isOpen={isImagePopupOpen}
@@ -175,7 +180,6 @@ function App() {
         <div className="popup__line"></div>
         <span className="popup__input-error linkimage-error"></span>
       </PopupWithForm>
-
       <Footer />
     </div>
   );

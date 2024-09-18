@@ -1,13 +1,11 @@
-function ImagePopup({ selectedCard, onClose, isOpen }) {
+function ImagePopup({ name, selectedCard, onClose, isOpen }) {
   if (!selectedCard) {
     return null;
   }
   return (
     <>
       <section
-        className={`popup popup-image-fullscreen ${
-          isOpen ? "popup__opened" : " "
-        }`}
+        className={`popup popup-${name} ${isOpen ? "popup__opened" : " "}`}
       >
         <div className="popup__container-image">
           <button
