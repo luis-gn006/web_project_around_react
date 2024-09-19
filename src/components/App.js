@@ -1,3 +1,4 @@
+import React from "react";
 import { useState, useEffect } from "react";
 import "../pages/index.css";
 import api from "../utils/Api";
@@ -19,20 +20,20 @@ function App() {
   const handleEditProfileClick = () => {
     setEditProfilePopupOpen(true);
   };
+  const [isAddElementPopupOpen, setAddPlacePopupOpen] = useState(false);
+  const handleAddPlaceClick = () => {
+    setAddPlacePopupOpen(true);
+  };
   /*
   const [isConfirmDeletePopupOpen, setConfirmDeletePopupOpen] = useState(false);
   const handleConfirmDeleteClick = () => {
     setConfirmDeletePopupOpen(true);
   };
   */
-  const [isAddElementPopupOpen, setAddElementPopupOpen] = useState(false);
-  const handleAddElementClick = () => {
-    setAddElementPopupOpen(true);
-  };
   const closeAllPopups = () => {
     setEditAvatarPopupOpen(false);
     setEditProfilePopupOpen(false);
-    setAddElementPopupOpen(false);
+    setAddPlacePopupOpen(false);
     setImagePopupOpen(false);
   };
 
@@ -62,7 +63,7 @@ function App() {
       <Main
         onEditAvatarClick={handleEditAvatarClick}
         onEditProfileClick={handleEditProfileClick}
-        onAddElementClick={handleAddElementClick}
+        onAddPlaceClick={handleAddPlaceClick}
       />
       <PopupWithForm
         name={"profile-avatar"}
