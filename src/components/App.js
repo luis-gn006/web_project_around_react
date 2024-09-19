@@ -13,15 +13,15 @@ import Card from "./Card";
 function App() {
   //Popups
   const [isEditAvatarPopupOpen, setEditAvatarPopupOpen] = useState(false);
-  const handleEditAvatarClick = () => {
+  const onEditAvatarClick = () => {
     setEditAvatarPopupOpen(true);
   };
   const [isEditProfilePopupOpen, setEditProfilePopupOpen] = useState(false);
-  const handleEditProfileClick = () => {
+  const onEditProfileClick = () => {
     setEditProfilePopupOpen(true);
   };
   const [isAddElementPopupOpen, setAddPlacePopupOpen] = useState(false);
-  const handleAddPlaceClick = () => {
+  const onAddPlaceClick = () => {
     setAddPlacePopupOpen(true);
   };
   /*
@@ -61,9 +61,9 @@ function App() {
     <div className="page">
       <Header />
       <Main
-        onEditAvatarClick={handleEditAvatarClick}
-        onEditProfileClick={handleEditProfileClick}
-        onAddPlaceClick={handleAddPlaceClick}
+        handleEditAvatarClick={onEditAvatarClick}
+        handleEditProfileClick={onEditProfileClick}
+        handleAddPlaceClick={onAddPlaceClick}
       />
       <PopupWithForm
         name={"profile-avatar"}

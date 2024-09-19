@@ -2,7 +2,11 @@ import { useState, useEffect } from "react";
 import profileAvatar from "../images/profile__image.jpg";
 import api from "../utils/Api.js";
 
-function Main({ onEditAvatarClick, onEditProfileClick, onAddPlaceClick }) {
+function Main({
+  handleEditAvatarClick,
+  handleEditProfileClick,
+  handleAddPlaceClick,
+}) {
   const [userName, setUserName] = useState([]);
   const [userDescription, setUserDescription] = useState([]);
   const [userAvatar, setUserAvatar] = useState([]);
@@ -30,7 +34,7 @@ function Main({ onEditAvatarClick, onEditProfileClick, onAddPlaceClick }) {
                 className="profile__avatar"
               />
               <button
-                onClick={onEditAvatarClick}
+                onClick={handleEditAvatarClick}
                 className="profile__avatar-edit"
               ></button>
             </div>
@@ -40,7 +44,7 @@ function Main({ onEditAvatarClick, onEditProfileClick, onAddPlaceClick }) {
                   !userName.length == 0 ? userName : "Cargando..."
                 }`}</h3>
                 <button
-                  onClick={onEditProfileClick}
+                  onClick={handleEditProfileClick}
                   className="profile__button-edit"
                 ></button>
               </div>
@@ -51,7 +55,10 @@ function Main({ onEditAvatarClick, onEditProfileClick, onAddPlaceClick }) {
           </div>
 
           <div className="profile__column-right">
-            <button onClick={onAddPlaceClick} className="profile__button-add">
+            <button
+              onClick={handleAddPlaceClick}
+              className="profile__button-add"
+            >
               +
             </button>
           </div>
