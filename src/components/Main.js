@@ -1,26 +1,13 @@
-import { useState, useEffect } from "react";
+import React from "react";
 import profileAvatar from "../images/profile__image.jpg";
-import api from "../utils/Api.js";
+import { CurrentUserContext } from "../contexts/CurrentUserContext.js";
 
 function Main({
   handleEditAvatarClick,
   handleEditProfileClick,
   handleAddPlaceClick,
 }) {
-  const [userName, setUserName] = useState([]);
-  const [userDescription, setUserDescription] = useState([]);
-  const [userAvatar, setUserAvatar] = useState([]);
-
-  //Cargar información del usuario
-  useEffect(() => {
-    api.getUserInfo().then((user) => setUserAvatar(user.avatar));
-  }, []);
-  useEffect(() => {
-    api.getUserInfo().then((user) => setUserDescription(user.about));
-  }, []);
-  useEffect(() => {
-    api.getUserInfo().then((user) => setUserName(user.name));
-  }, []);
+  const { currentUser } = React.useContext(CurrentUserContext);
 
   return (
     <>
@@ -29,7 +16,11 @@ function Main({
           <div className="profile__column-left">
             <div className="profile__avatar-container">
               <img
-                src={`${!userAvatar.length == 0 ? userAvatar : profileAvatar}`}
+                src={`${
+                  !currentUser?.avatar.length == 0
+                    ? currentUser?.avatar
+                    : profileAvatar
+                }`}
                 alt="imagen de perfil"
                 className="profile__avatar"
               />
@@ -41,7 +32,9 @@ function Main({
             <div className="profile__info">
               <div className="profile__name-content">
                 <h3 className="profile__name">{`${
-                  !userName.length == 0 ? userName : "Cargando..."
+                  !currentUser?.name.length == 0
+                    ? currentUser?.name
+                    : "Cargando..."
                 }`}</h3>
                 <button
                   onClick={handleEditProfileClick}
@@ -49,7 +42,9 @@ function Main({
                 ></button>
               </div>
               <p className="profile__job">{`${
-                !userDescription.length == 0 ? userDescription : "Cargando..."
+                !currentUser?.about.length == 0
+                  ? currentUser?.about
+                  : "Cargando..."
               }`}</p>
             </div>
           </div>

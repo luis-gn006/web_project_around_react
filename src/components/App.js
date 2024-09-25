@@ -1,5 +1,4 @@
 import React from "react";
-import { useState, useEffect } from "react";
 import "../pages/index.css";
 import api from "../utils/Api";
 import Header from "./Header";
@@ -9,23 +8,31 @@ import ImagePopup from "./ImagePopup";
 import Elements from "./Elements";
 import Footer from "./Footer";
 import Card from "./Card";
+import { CurrentUserContext } from "../contexts/CurrentUserContext.js";
 
 function App() {
+  //User info
+  const [currentUser, setCurrentUser] = React.useState();
+  React.useEffect(() => {
+    api.getUserInfo().then((user) => setCurrentUser(user));
+  }, []);
+
   //Popups
-  const [isEditAvatarPopupOpen, setEditAvatarPopupOpen] = useState(false);
+  const [isEditAvatarPopupOpen, setEditAvatarPopupOpen] = React.useState(false);
   const onEditAvatarClick = () => {
     setEditAvatarPopupOpen(true);
   };
-  const [isEditProfilePopupOpen, setEditProfilePopupOpen] = useState(false);
+  const [isEditProfilePopupOpen, setEditProfilePopupOpen] =
+    React.useState(false);
   const onEditProfileClick = () => {
     setEditProfilePopupOpen(true);
   };
-  const [isAddElementPopupOpen, setAddPlacePopupOpen] = useState(false);
+  const [isAddElementPopupOpen, setAddPlacePopupOpen] = React.useState(false);
   const onAddPlaceClick = () => {
     setAddPlacePopupOpen(true);
   };
   /*
-  const [isConfirmDeletePopupOpen, setConfirmDeletePopupOpen] = useState(false);
+  const [isConfirmDeletePopupOpen, setConfirmDeletePopupOpen] = React.useState(false);
   const handleConfirmDeleteClick = () => {
     setConfirmDeletePopupOpen(true);
   };
@@ -38,9 +45,9 @@ function App() {
   };
 
   //Cards
-  const [cards, setCards] = useState([]);
+  const [cards, setCards] = React.useState([]);
   //Cargar tarjetas
-  useEffect(() => {
+  React.useEffect(() => {
     api.getInitialCards().then((cards) => setCards(cards));
   }, []);
   //Borrar tarjetas (solo en local , no en api)
@@ -50,8 +57,8 @@ function App() {
   };
 
   //Popup imagen
-  const [isImagePopupOpen, setImagePopupOpen] = useState(false);
-  const [selectedCard, setSelectedCard] = useState([]);
+  const [isImagePopupOpen, setImagePopupOpen] = React.useState(false);
+  const [selectedCard, setSelectedCard] = React.useState([]);
   const funcSelectCard = (card) => {
     setSelectedCard(card);
     setImagePopupOpen(true);
@@ -59,129 +66,131 @@ function App() {
 
   return (
     <div className="page">
-      <Header />
-      <Main
-        handleEditAvatarClick={onEditAvatarClick}
-        handleEditProfileClick={onEditProfileClick}
-        handleAddPlaceClick={onAddPlaceClick}
-      />
-      <PopupWithForm
-        name={"profile-avatar"}
-        title={"Cambiar foto de perfil"}
-        isOpen={isEditAvatarPopupOpen}
-        buttonText={"Guardar"}
-        onClose={closeAllPopups}
-      >
-        <label htmlFor="avatar" className="popup__form-label"></label>
-        <input
-          type="url"
-          className="popup__form-input popup__profile-avatar"
-          id="avatar"
-          name="avatar"
-          placeholder="Enlace a la imagen"
-          required
+      <CurrentUserContext.Provider value={{ currentUser }}>
+        <Header />
+        <Main
+          handleEditAvatarClick={onEditAvatarClick}
+          handleEditProfileClick={onEditProfileClick}
+          handleAddPlaceClick={onAddPlaceClick}
         />
-        <div className="popup__line popup__line-avatar"></div>
-        <span className="popup__input-error avatar-error"></span>
-      </PopupWithForm>
-      <PopupWithForm
-        name={"profile"}
-        title={"Editar Perfil"}
-        isOpen={isEditProfilePopupOpen}
-        buttonText={"Guardar"}
-        onClose={closeAllPopups}
-      >
-        <label htmlFor="name" className="popup__form-label"></label>
-        <input
-          type="text"
-          className="popup__form-input popup__form-name"
-          id="name"
-          name="name"
-          placeholder="Nombre"
-          required
-          minLength="2"
-          maxLength="40"
-        />
-        <div className="popup__line popup__line-name"></div>
-        <span className="popup__input-error name-error"></span>
-        <label htmlFor="job" className="popup__form-label"></label>
-        <input
-          type="text"
-          className="popup__form-input popup__form-job"
-          id="job"
-          name="job"
-          placeholder="Acerca de mí"
-          required
-          minLength="2"
-          maxLength="200"
-        />
-        <div className="popup__line popup__line-job"></div>
-        <span className="popup__input-error job-error"></span>
-      </PopupWithForm>
-      <Elements>
-        {cards.map((item) => {
-          return (
-            <Card
-              card={item}
-              url={item.link}
-              name={item.name}
-              likes={item.likes.length}
-              key={item._id}
-              handleDeleteCard={funcDeleteCard}
-              handleSelectedCard={funcSelectCard}
-            />
-          );
-        })}
-      </Elements>
-      {selectedCard && (
-        <ImagePopup
-          name={"image-fullscreen"}
-          selectedCard={selectedCard}
+        <PopupWithForm
+          name={"profile-avatar"}
+          title={"Cambiar foto de perfil"}
+          isOpen={isEditAvatarPopupOpen}
+          buttonText={"Guardar"}
           onClose={closeAllPopups}
-          isOpen={isImagePopupOpen}
-        />
-      )}
+        >
+          <label htmlFor="avatar" className="popup__form-label"></label>
+          <input
+            type="url"
+            className="popup__form-input popup__profile-avatar"
+            id="avatar"
+            name="avatar"
+            placeholder="Enlace a la imagen"
+            required
+          />
+          <div className="popup__line popup__line-avatar"></div>
+          <span className="popup__input-error avatar-error"></span>
+        </PopupWithForm>
+        <PopupWithForm
+          name={"profile"}
+          title={"Editar Perfil"}
+          isOpen={isEditProfilePopupOpen}
+          buttonText={"Guardar"}
+          onClose={closeAllPopups}
+        >
+          <label htmlFor="name" className="popup__form-label"></label>
+          <input
+            type="text"
+            className="popup__form-input popup__form-name"
+            id="name"
+            name="name"
+            placeholder="Nombre"
+            required
+            minLength="2"
+            maxLength="40"
+          />
+          <div className="popup__line popup__line-name"></div>
+          <span className="popup__input-error name-error"></span>
+          <label htmlFor="job" className="popup__form-label"></label>
+          <input
+            type="text"
+            className="popup__form-input popup__form-job"
+            id="job"
+            name="job"
+            placeholder="Acerca de mí"
+            required
+            minLength="2"
+            maxLength="200"
+          />
+          <div className="popup__line popup__line-job"></div>
+          <span className="popup__input-error job-error"></span>
+        </PopupWithForm>
+        <Elements>
+          {cards.map((item) => {
+            return (
+              <Card
+                card={item}
+                url={item.link}
+                name={item.name}
+                likes={item.likes.length}
+                key={item._id}
+                handleDeleteCard={funcDeleteCard}
+                handleSelectedCard={funcSelectCard}
+              />
+            );
+          })}
+        </Elements>
+        {selectedCard && (
+          <ImagePopup
+            name={"image-fullscreen"}
+            selectedCard={selectedCard}
+            onClose={closeAllPopups}
+            isOpen={isImagePopupOpen}
+          />
+        )}
 
-      <PopupWithForm
-        name={"delete-card"}
-        title={"¿Estás seguro/a?"}
-        isOpen={""}
-        buttonText={"Confirmar"}
-        onClose={closeAllPopups}
-      />
-      <PopupWithForm
-        name={"elements"}
-        title={"Nuevo lugar"}
-        isOpen={isAddElementPopupOpen}
-        buttonText={"Crear"}
-        onClose={closeAllPopups}
-      >
-        <label htmlFor="title" className="popup__form-label"></label>
-        <input
-          type="text"
-          className="popup__form-input popup__form-title"
-          id="title"
-          name="title"
-          placeholder="Título"
-          required
-          minLength="2"
-          maxLength="30"
+        <PopupWithForm
+          name={"delete-card"}
+          title={"¿Estás seguro/a?"}
+          isOpen={""}
+          buttonText={"Confirmar"}
+          onClose={closeAllPopups}
         />
-        <div className="popup__line"></div>
-        <span className="popup__input-error title-error"></span>
-        <label htmlFor="link__image" className="popup__form-label"></label>
-        <input
-          type="url"
-          className="popup__form-input popup__form-link"
-          id="linkimage"
-          name="link"
-          placeholder="Enlace a la imagen"
-          required
-        />
-        <div className="popup__line"></div>
-        <span className="popup__input-error linkimage-error"></span>
-      </PopupWithForm>
-      <Footer />
+        <PopupWithForm
+          name={"elements"}
+          title={"Nuevo lugar"}
+          isOpen={isAddElementPopupOpen}
+          buttonText={"Crear"}
+          onClose={closeAllPopups}
+        >
+          <label htmlFor="title" className="popup__form-label"></label>
+          <input
+            type="text"
+            className="popup__form-input popup__form-title"
+            id="title"
+            name="title"
+            placeholder="Título"
+            required
+            minLength="2"
+            maxLength="30"
+          />
+          <div className="popup__line"></div>
+          <span className="popup__input-error title-error"></span>
+          <label htmlFor="link__image" className="popup__form-label"></label>
+          <input
+            type="url"
+            className="popup__form-input popup__form-link"
+            id="linkimage"
+            name="link"
+            placeholder="Enlace a la imagen"
+            required
+          />
+          <div className="popup__line"></div>
+          <span className="popup__input-error linkimage-error"></span>
+        </PopupWithForm>
+        <Footer />
+      </CurrentUserContext.Provider>
     </div>
   );
 }
