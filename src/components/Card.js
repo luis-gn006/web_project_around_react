@@ -7,6 +7,7 @@ function Card({
   likes,
   handleDeleteCard,
   handleSelectedCard,
+  handleCardLike,
 }) {
   const { currentUser } = React.useContext(CurrentUserContext);
   const isOwn = card.owner._id === currentUser._id;
@@ -16,6 +17,9 @@ function Card({
   };
   const clickImage = () => {
     handleSelectedCard(card);
+  };
+  const onCardLike = () => {
+    handleCardLike(card);
   };
 
   return (
@@ -41,6 +45,7 @@ function Card({
             className={`${
               isLiked ? "element__button-like-active" : "element__button-like"
             }`}
+            onClick={onCardLike}
           ></button>
           <p className="element__likes">{likes}</p>
         </div>

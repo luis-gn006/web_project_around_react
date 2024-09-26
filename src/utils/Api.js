@@ -97,40 +97,6 @@ class Api {
         console.log(error);
       });
   }
-  putLike(cardId) {
-    return fetch(`${this.url}/cards/likes/${cardId}`, {
-      method: "PUT",
-      headers: {
-        authorization: this.authorization,
-      },
-    })
-      .then((response) => {
-        if (response.ok) {
-          return response.json();
-        }
-        return Promise.reject(`Error: ${response.status}`);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }
-  deleteLike(cardId) {
-    return fetch(`${this.url}/cards/likes/${cardId}`, {
-      method: "DELETE",
-      headers: {
-        authorization: this.authorization,
-      },
-    })
-      .then((response) => {
-        if (response.ok) {
-          return response.json();
-        }
-        return Promise.reject(`Error: ${response.status}`);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }
   patchUserAvatar(avatarLink) {
     return fetch(`${this.url}/users/me/avatar`, {
       method: "PATCH",
@@ -141,6 +107,23 @@ class Api {
       body: JSON.stringify({
         avatar: avatarLink,
       }),
+    })
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        }
+        return Promise.reject(`Error: ${response.status}`);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+  changeLikeCardStatus(cardId, isLiked) {
+    return fetch(`${this.url}/cards/likes/${cardId}`, {
+      method: `${isLiked ? "PUT" : "DELETE"}`,
+      headers: {
+        authorization: this.authorization,
+      },
     })
       .then((response) => {
         if (response.ok) {
