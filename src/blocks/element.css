@@ -78,6 +78,9 @@
   color: #000;
   margin: 0;
 }
+.element__likes-disactive {
+  display: none;
+}
 .element__button-like-active {
   background: url(../images/element__like-active.svg) no-repeat center;
   background-size: contain;
@@ -85,6 +88,11 @@
   height: 16px;
   border: none;
   box-sizing: content-box;
+}
+.element__button-like-active:hover {
+  opacity: 0.8;
+  filter: drop-shadow(0 4px 4px #000);
+  cursor: pointer;
 }
 
 @media screen and (min-width: 800px) {

@@ -10,10 +10,10 @@ function Card({
   handleCardLike,
 }) {
   const { currentUser } = React.useContext(CurrentUserContext);
-  const isOwn = card.owner._id === currentUser._id;
-  const isLiked = card.likes.some((i) => i._id === currentUser._id);
+  const isOwn = card.owner._id === currentUser?._id;
+  const isLiked = card.likes.some((i) => i._id === currentUser?._id);
   const deleteCard = () => {
-    handleDeleteCard(name);
+    handleDeleteCard(card);
   };
   const clickImage = () => {
     handleSelectedCard(card);
@@ -47,7 +47,13 @@ function Card({
             }`}
             onClick={onCardLike}
           ></button>
-          <p className="element__likes">{likes}</p>
+          <p
+            className={`${
+              likes ? "element__likes" : "element__likes-disactive"
+            }`}
+          >
+            {likes}
+          </p>
         </div>
       </div>
     </div>

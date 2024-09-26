@@ -51,9 +51,10 @@ function App() {
     api.getInitialCards().then((cards) => setCards(cards));
   }, []);
   //Borrar tarjetas (solo en local , no en api)
-  const funcDeleteCard = (cardName) => {
-    const filterCards = cards.filter((item) => item.name !== cardName);
-    setCards(filterCards);
+  const funcDeleteCard = (card) => {
+    api.deleteCard(card?._id).then(() => {
+      setCards((state) => state.filter((c) => c._id !== card._id));
+    });
   };
   //Card Like
   function handleCardLike(card) {
