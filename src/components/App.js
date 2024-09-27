@@ -3,7 +3,8 @@ import "../pages/index.css";
 import api from "../utils/Api";
 import Header from "./Header";
 import Main from "./Main";
-import PopupWithForm from "./PopupWithForm";
+import PopupWithForm from "./PopupWithForm.js";
+import EditProfilePopup from "./EditProfilePopup.js";
 import ImagePopup from "./ImagePopup";
 import Elements from "./Elements";
 import Footer from "./Footer";
@@ -102,40 +103,10 @@ function App() {
           <div className="popup__line popup__line-avatar"></div>
           <span className="popup__input-error avatar-error"></span>
         </PopupWithForm>
-        <PopupWithForm
-          name={"profile"}
-          title={"Editar Perfil"}
+        <EditProfilePopup
           isOpen={isEditProfilePopupOpen}
-          buttonText={"Guardar"}
           onClose={closeAllPopups}
-        >
-          <label htmlFor="name" className="popup__form-label"></label>
-          <input
-            type="text"
-            className="popup__form-input popup__form-name"
-            id="name"
-            name="name"
-            placeholder="Nombre"
-            required
-            minLength="2"
-            maxLength="40"
-          />
-          <div className="popup__line popup__line-name"></div>
-          <span className="popup__input-error name-error"></span>
-          <label htmlFor="job" className="popup__form-label"></label>
-          <input
-            type="text"
-            className="popup__form-input popup__form-job"
-            id="job"
-            name="job"
-            placeholder="Acerca de mí"
-            required
-            minLength="2"
-            maxLength="200"
-          />
-          <div className="popup__line popup__line-job"></div>
-          <span className="popup__input-error job-error"></span>
-        </PopupWithForm>
+        />
         <Elements>
           {cards.map((item) => {
             return (
