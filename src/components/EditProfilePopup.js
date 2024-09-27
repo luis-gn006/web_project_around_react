@@ -18,8 +18,8 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
   function handleChangeDescription(e) {
     setDescription(e.target.value);
   }
-  function handleSubmit(event) {
-    event.preventDefault();
+  function handleSubmit(e) {
+    e.preventDefault();
     onUpdateUser({
       name,
       about: description,

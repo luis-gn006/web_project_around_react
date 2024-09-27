@@ -1,11 +1,21 @@
 import React from "react";
 import profileAvatar from "../images/profile__image.jpg";
+import Elements from "./Elements.js";
+import Card from "./Card.js";
+import ImagePopup from "./ImagePopup";
 import { CurrentUserContext } from "../contexts/CurrentUserContext.js";
 
 function Main({
   handleEditAvatarClick,
   handleEditProfileClick,
   handleAddPlaceClick,
+  cards,
+  handleCardLike,
+  funcDeleteCard,
+  funcSelectCard,
+  selectedCard,
+  closeAllPopups,
+  isImagePopupOpen,
 }) {
   const { currentUser } = React.useContext(CurrentUserContext);
 
@@ -58,6 +68,31 @@ function Main({
             </button>
           </div>
         </section>
+
+        <Elements>
+          {cards.map((item) => {
+            return (
+              <Card
+                handleCardLike={handleCardLike}
+                card={item}
+                url={item.link}
+                name={item.name}
+                likes={item.likes.length}
+                key={item._id}
+                handleDeleteCard={funcDeleteCard}
+                handleSelectedCard={funcSelectCard}
+              />
+            );
+          })}
+        </Elements>
+        {selectedCard && (
+          <ImagePopup
+            name={"image-fullscreen"}
+            selectedCard={selectedCard}
+            onClose={closeAllPopups}
+            isOpen={isImagePopupOpen}
+          />
+        )}
       </main>
     </>
   );

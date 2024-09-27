@@ -6,10 +6,9 @@ import Main from "./Main";
 import PopupWithForm from "./PopupWithForm.js";
 import EditProfilePopup from "./EditProfilePopup.js";
 import EditAvatarPopup from "./EditAvatarPopup.js";
-import ImagePopup from "./ImagePopup";
-import Elements from "./Elements";
+import AddPlacePopup from "./AddPlacePopup.js";
 import Footer from "./Footer";
-import Card from "./Card";
+
 import { CurrentUserContext } from "../contexts/CurrentUserContext.js";
 
 function App() {
@@ -74,6 +73,13 @@ function App() {
       closeAllPopups();
     });
   };
+  //Crear nueva tarjeta
+  const handleAddPlace = ({ name, url }) => {
+    api.postNewCard(name, url).then((newCard) => {
+      setCards([newCard, ...cards]);
+      closeAllPopups();
+    });
+  };
   //Actualizar avatar imagen
   const handleUpdateAvatar = ({ avatar }) => {
     api.patchUserAvatar(avatar).then((newAvatar) => {
@@ -97,6 +103,13 @@ function App() {
           handleEditAvatarClick={onEditAvatarClick}
           handleEditProfileClick={onEditProfileClick}
           handleAddPlaceClick={onAddPlaceClick}
+          cards={cards}
+          handleCardLike={handleCardLike}
+          funcDeleteCard={funcDeleteCard}
+          funcSelectCard={funcSelectCard}
+          selectedCard={selectedCard}
+          closeAllPopups={closeAllPopups}
+          isImagePopupOpen={isImagePopupOpen}
         />
         <EditAvatarPopup
           isOpen={isEditAvatarPopupOpen}
@@ -108,31 +121,11 @@ function App() {
           onClose={closeAllPopups}
           onUpdateUser={handleUpdateUser}
         />
-        <Elements>
-          {cards.map((item) => {
-            return (
-              <Card
-                handleCardLike={handleCardLike}
-                card={item}
-                url={item.link}
-                name={item.name}
-                likes={item.likes.length}
-                key={item._id}
-                handleDeleteCard={funcDeleteCard}
-                handleSelectedCard={funcSelectCard}
-              />
-            );
-          })}
-        </Elements>
-        {selectedCard && (
-          <ImagePopup
-            name={"image-fullscreen"}
-            selectedCard={selectedCard}
-            onClose={closeAllPopups}
-            isOpen={isImagePopupOpen}
-          />
-        )}
-
+        <AddPlacePopup
+          isOpen={isAddElementPopupOpen}
+          onClose={closeAllPopups}
+          onAddPlace={handleAddPlace}
+        />
         <PopupWithForm
           name={"delete-card"}
           title={"¿Estás seguro/a?"}
@@ -140,38 +133,7 @@ function App() {
           buttonText={"Confirmar"}
           onClose={closeAllPopups}
         />
-        <PopupWithForm
-          name={"elements"}
-          title={"Nuevo lugar"}
-          isOpen={isAddElementPopupOpen}
-          buttonText={"Crear"}
-          onClose={closeAllPopups}
-        >
-          <label htmlFor="title" className="popup__form-label"></label>
-          <input
-            type="text"
-            className="popup__form-input popup__form-title"
-            id="title"
-            name="title"
-            placeholder="Título"
-            required
-            minLength="2"
-            maxLength="30"
-          />
-          <div className="popup__line"></div>
-          <span className="popup__input-error title-error"></span>
-          <label htmlFor="link__image" className="popup__form-label"></label>
-          <input
-            type="url"
-            className="popup__form-input popup__form-link"
-            id="linkimage"
-            name="link"
-            placeholder="Enlace a la imagen"
-            required
-          />
-          <div className="popup__line"></div>
-          <span className="popup__input-error linkimage-error"></span>
-        </PopupWithForm>
+
         <Footer />
       </CurrentUserContext.Provider>
     </div>
