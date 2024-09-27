@@ -1,3 +1,5 @@
+import React from "react";
+import FormValidator from "./FormValidator";
 function PopupWithForm({
   name,
   title,
@@ -7,6 +9,20 @@ function PopupWithForm({
   onClose,
   onSubmit,
 }) {
+  const formConfig = {
+    inputSelector: ".popup__form-input",
+    submitButtonSelector: ".popup__form-button",
+    inactiveButtonClass: "popup__form-button_disabled",
+    activeButtonClass: "popup__form-button_active",
+    inputErrorClass: "popup__form-input_error",
+    errorClass: "popup__input-error_active",
+    fieldsetSelector: ".popup__form-set",
+  };
+  const formRef = React.useRef();
+  React.useEffect(() => {
+    const formValidation = new FormValidator(formConfig, formRef.current);
+    formValidation.enableValidation();
+  }, []);
   return (
     <>
       <section
@@ -19,6 +35,7 @@ function PopupWithForm({
             onSubmit={onSubmit}
             className={`popup__form popup__form-${name}`}
             noValidate
+            ref={formRef}
           >
             <fieldset className="popup__form-set">
               {children}
