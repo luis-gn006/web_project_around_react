@@ -5,6 +5,7 @@ import Header from "./Header";
 import Main from "./Main";
 import PopupWithForm from "./PopupWithForm.js";
 import EditProfilePopup from "./EditProfilePopup.js";
+import EditAvatarPopup from "./EditAvatarPopup.js";
 import ImagePopup from "./ImagePopup";
 import Elements from "./Elements";
 import Footer from "./Footer";
@@ -73,7 +74,13 @@ function App() {
       closeAllPopups();
     });
   };
-
+  //Actualizar avatar imagen
+  const handleUpdateAvatar = ({ avatar }) => {
+    api.patchUserAvatar(avatar).then((newAvatar) => {
+      setCurrentUser(newAvatar);
+      closeAllPopups();
+    });
+  };
   //Popup imagen
   const [isImagePopupOpen, setImagePopupOpen] = React.useState(false);
   const [selectedCard, setSelectedCard] = React.useState([]);
@@ -91,25 +98,11 @@ function App() {
           handleEditProfileClick={onEditProfileClick}
           handleAddPlaceClick={onAddPlaceClick}
         />
-        <PopupWithForm
-          name={"profile-avatar"}
-          title={"Cambiar foto de perfil"}
+        <EditAvatarPopup
           isOpen={isEditAvatarPopupOpen}
-          buttonText={"Guardar"}
           onClose={closeAllPopups}
-        >
-          <label htmlFor="avatar" className="popup__form-label"></label>
-          <input
-            type="url"
-            className="popup__form-input popup__profile-avatar"
-            id="avatar"
-            name="avatar"
-            placeholder="Enlace a la imagen"
-            required
-          />
-          <div className="popup__line popup__line-avatar"></div>
-          <span className="popup__input-error avatar-error"></span>
-        </PopupWithForm>
+          onUpdateAvatar={handleUpdateAvatar}
+        />
         <EditProfilePopup
           isOpen={isEditProfilePopupOpen}
           onClose={closeAllPopups}
