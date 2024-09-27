@@ -2,7 +2,7 @@ import React from "react";
 import PopupWithForm from "./PopupWithForm";
 import { CurrentUserContext } from "../contexts/CurrentUserContext.js";
 
-function EditProfilePopup({ isOpen, onClose }) {
+function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
   const { currentUser } = React.useContext(CurrentUserContext);
   const [name, setName] = React.useState("");
   const [description, setDescription] = React.useState("");
@@ -18,6 +18,13 @@ function EditProfilePopup({ isOpen, onClose }) {
   function handleChangeDescription(e) {
     setDescription(e.target.value);
   }
+  function handleSubmit(event) {
+    event.preventDefault();
+    onUpdateUser({
+      name,
+      about: description,
+    });
+  }
   return (
     <>
       <PopupWithForm
@@ -26,6 +33,7 @@ function EditProfilePopup({ isOpen, onClose }) {
         isOpen={isOpen}
         buttonText={"Guardar"}
         onClose={onClose}
+        onSubmit={handleSubmit}
       >
         <label htmlFor="name" className="popup__form-label"></label>
         <input

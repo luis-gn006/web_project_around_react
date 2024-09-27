@@ -66,6 +66,13 @@ function App() {
       setCards((state) => state.map((c) => (c._id === card._id ? newCard : c)));
     });
   }
+  //Actualizar info perfil
+  const handleUpdateUser = ({ name, about }) => {
+    api.patchUserInfo(name, about).then((newUserInfo) => {
+      setCurrentUser(newUserInfo);
+      closeAllPopups();
+    });
+  };
 
   //Popup imagen
   const [isImagePopupOpen, setImagePopupOpen] = React.useState(false);
@@ -106,6 +113,7 @@ function App() {
         <EditProfilePopup
           isOpen={isEditProfilePopupOpen}
           onClose={closeAllPopups}
+          onUpdateUser={handleUpdateUser}
         />
         <Elements>
           {cards.map((item) => {
