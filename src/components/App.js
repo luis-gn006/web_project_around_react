@@ -38,7 +38,7 @@ function App() {
     setCardToDelete(card);
     setConfirmDeletePopupOpen(true);
   };
-
+  //Cerrar popups
   const closeAllPopups = () => {
     setEditAvatarPopupOpen(false);
     setEditProfilePopupOpen(false);
@@ -46,6 +46,14 @@ function App() {
     setImagePopupOpen(false);
     setConfirmDeletePopupOpen(false);
   };
+  React.useEffect(() => {
+    document.addEventListener("keydown", (e) => {
+      e.key == "Escape" && closeAllPopups();
+    });
+    document.addEventListener("click", (e) => {
+      e.target.classList.contains("popup") && closeAllPopups();
+    });
+  });
 
   //Cards
   const [cards, setCards] = React.useState([]);
