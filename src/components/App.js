@@ -3,12 +3,11 @@ import "../pages/index.css";
 import api from "../utils/Api";
 import Header from "./Header";
 import Main from "./Main";
-import PopupWithForm from "./PopupWithForm.js";
+import ConfirmDeleteCardPopup from "./ConfirmDeleteCardPopup.js";
 import EditProfilePopup from "./EditProfilePopup.js";
 import EditAvatarPopup from "./EditAvatarPopup.js";
 import AddPlacePopup from "./AddPlacePopup.js";
 import Footer from "./Footer";
-
 import { CurrentUserContext } from "../contexts/CurrentUserContext.js";
 
 function App() {
@@ -32,17 +31,20 @@ function App() {
   const onAddPlaceClick = () => {
     setAddPlacePopupOpen(true);
   };
-  /*
-  const [isConfirmDeletePopupOpen, setConfirmDeletePopupOpen] = React.useState(false);
-  const handleConfirmDeleteClick = () => {
+  const [cardToDelete, setCardToDelete] = React.useState({});
+  const [isConfirmDeletePopupOpen, setConfirmDeletePopupOpen] =
+    React.useState(false);
+  const handleDeleteClick = (card) => {
+    setCardToDelete(card);
     setConfirmDeletePopupOpen(true);
   };
-  */
+
   const closeAllPopups = () => {
     setEditAvatarPopupOpen(false);
     setEditProfilePopupOpen(false);
     setAddPlacePopupOpen(false);
     setImagePopupOpen(false);
+    setConfirmDeletePopupOpen(false);
   };
 
   //Cards
@@ -51,13 +53,17 @@ function App() {
   React.useEffect(() => {
     api.getInitialCards().then((cards) => setCards(cards));
   }, []);
-  //Borrar tarjetas (solo en local , no en api)
-  const funcDeleteCard = (card) => {
-    api.deleteCard(card?._id).then(() => {
-      setCards((state) => state.filter((c) => c._id !== card._id));
-    });
+  //Borrar tarjetas
+  const handleConfirmDeleteCard = (e) => {
+    e.preventDefault();
+    if (cardToDelete) {
+      api.deleteCard(cardToDelete?._id).then(() => {
+        setCards((state) => state.filter((c) => c._id !== cardToDelete._id));
+        closeAllPopups();
+      });
+    }
   };
-  //Card Like
+  //Card Likes
   function handleCardLike(card) {
     // Verifica una vez más si a esta tarjeta ya le han dado like
     const isLiked = card.likes?.some((i) => i._id === currentUser._id);
@@ -80,14 +86,14 @@ function App() {
       closeAllPopups();
     });
   };
-  //Actualizar avatar imagen
+  //Actualizar avatar
   const handleUpdateAvatar = ({ avatar }) => {
     api.patchUserAvatar(avatar).then((newAvatar) => {
       setCurrentUser(newAvatar);
       closeAllPopups();
     });
   };
-  //Popup imagen
+  //Popup de imagen
   const [isImagePopupOpen, setImagePopupOpen] = React.useState(false);
   const [selectedCard, setSelectedCard] = React.useState([]);
   const funcSelectCard = (card) => {
@@ -105,7 +111,7 @@ function App() {
           handleAddPlaceClick={onAddPlaceClick}
           cards={cards}
           handleCardLike={handleCardLike}
-          funcDeleteCard={funcDeleteCard}
+          funcDeleteCard={handleDeleteClick}
           funcSelectCard={funcSelectCard}
           selectedCard={selectedCard}
           closeAllPopups={closeAllPopups}
@@ -126,14 +132,11 @@ function App() {
           onClose={closeAllPopups}
           onAddPlace={handleAddPlace}
         />
-        <PopupWithForm
-          name={"delete-card"}
-          title={"¿Estás seguro/a?"}
-          isOpen={""}
-          buttonText={"Confirmar"}
+        <ConfirmDeleteCardPopup
+          isOpen={isConfirmDeletePopupOpen}
           onClose={closeAllPopups}
+          handleSubmit={handleConfirmDeleteCard}
         />
-
         <Footer />
       </CurrentUserContext.Provider>
     </div>
