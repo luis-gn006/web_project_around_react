@@ -1,6 +1,7 @@
 import React from "react";
 import profileAvatar from "../images/profile__image.jpg";
 import Elements from "./Elements.js";
+import Spinner from "./Spinner.js";
 import Card from "./Card.js";
 import ImagePopup from "./ImagePopup";
 import { CurrentUserContext } from "../contexts/CurrentUserContext.js";
@@ -10,6 +11,7 @@ function Main({
   handleEditProfileClick,
   handleAddPlaceClick,
   cards,
+  isCards,
   handleCardLike,
   funcDeleteCard,
   funcSelectCard,
@@ -70,6 +72,7 @@ function Main({
         </section>
 
         <Elements>
+          <Spinner isCards={isCards} />
           {cards.map((item) => {
             return (
               <Card

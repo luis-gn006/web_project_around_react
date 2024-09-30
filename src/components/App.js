@@ -56,10 +56,17 @@ function App() {
   });
 
   //Cards
+  const [isCards, setIsCards] = React.useState(false);
   const [cards, setCards] = React.useState([]);
   //Cargar tarjetas
   React.useEffect(() => {
-    api.getInitialCards().then((cards) => setCards(cards));
+    setIsCards(true);
+    api
+      .getInitialCards()
+      .then((cards) => setCards(cards))
+      .finally(() => {
+        setIsCards(false);
+      });
   }, []);
   //Borrar tarjetas
   const handleConfirmDeleteCard = () => {
@@ -117,6 +124,7 @@ function App() {
           handleEditProfileClick={onEditProfileClick}
           handleAddPlaceClick={onAddPlaceClick}
           cards={cards}
+          isCards={isCards}
           handleCardLike={handleCardLike}
           funcDeleteCard={handleDeleteClick}
           funcSelectCard={funcSelectCard}
