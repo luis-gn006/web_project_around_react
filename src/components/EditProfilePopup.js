@@ -6,6 +6,7 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
   const { currentUser } = React.useContext(CurrentUserContext);
   const [name, setName] = React.useState("");
   const [description, setDescription] = React.useState("");
+  const [isPatching, setIsPatching] = React.useState(false);
 
   React.useEffect(() => {
     if (currentUser) {
@@ -22,9 +23,12 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
   }
   function handleSubmit(e) {
     e.preventDefault();
+    setIsPatching(true);
     onUpdateUser({
       name,
       about: description,
+    }).finally(() => {
+      setIsPatching(false);
     });
   }
   React.useEffect(() => {
@@ -41,7 +45,7 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
         name={"profile"}
         title={"Editar Perfil"}
         isOpen={isOpen}
-        buttonText={"Guardar"}
+        buttonText={isPatching ? "Guardando..." : "Guardar"}
         onClose={onClose}
         onSubmit={handleSubmit}
       >

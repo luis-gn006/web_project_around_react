@@ -2,13 +2,16 @@ import React from "react";
 import PopupWithForm from "./PopupWithForm";
 
 function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar }) {
+  const [isUpdating, setIsUpdating] = React.useState(false);
   const avatarRef = React.useRef();
   function handleSubmit(e) {
     e.preventDefault();
+    setIsUpdating(true);
     onUpdateAvatar({
       avatar: avatarRef.current.value,
+    }).finally(() => {
+      setIsUpdating(false);
     });
-    avatarRef.current.value = "";
   }
   React.useEffect(() => {
     if (!isOpen) {
@@ -21,7 +24,7 @@ function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar }) {
         name={"profile-avatar"}
         title={"Cambiar foto de perfil"}
         isOpen={isOpen}
-        buttonText={"Guardar"}
+        buttonText={isUpdating ? "Guardando..." : "Guardar"}
         onClose={onClose}
         onSubmit={handleSubmit}
       >

@@ -1,5 +1,13 @@
 import React from "react";
-function ConfirmDeleteCardPopup({ isOpen, onClose, handleSubmit }) {
+function ConfirmDeleteCardPopup({ isOpen, onClose, onConfirmDelete }) {
+  const [isDeleting, setIsDeleting] = React.useState(false);
+  function handleSubmit(e) {
+    e.preventDefault();
+    setIsDeleting(true);
+    onConfirmDelete().finally(() => {
+      setIsDeleting(false);
+    });
+  }
   return (
     <>
       <section
@@ -18,7 +26,7 @@ function ConfirmDeleteCardPopup({ isOpen, onClose, handleSubmit }) {
                 type="submit"
                 className={`popup__form-button popup__form-button_active popup__save-button-delete-card`}
               >
-                Confirmar
+                {isDeleting ? "Borrando..." : "Confirmar"}
               </button>
             </fieldset>
           </form>

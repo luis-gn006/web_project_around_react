@@ -4,6 +4,7 @@ import PopupWithForm from "./PopupWithForm";
 function AddPlacePopup({ isOpen, onClose, onAddPlace }) {
   const [title, setTitle] = React.useState("");
   const [link, setLink] = React.useState("");
+  const [isPosting, setIsPosting] = React.useState(false);
   function handleChangeTitle(e) {
     setTitle(e.target.value);
   }
@@ -12,12 +13,13 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace }) {
   }
   function handleSubmit(e) {
     e.preventDefault();
+    setIsPosting(true);
     onAddPlace({
       name: title,
       url: link,
+    }).finally(() => {
+      setIsPosting(false);
     });
-    setTitle("");
-    setLink("");
   }
   React.useEffect(() => {
     if (!isOpen) {
@@ -31,7 +33,7 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace }) {
         name={"elements"}
         title={"Nuevo lugar"}
         isOpen={isOpen}
-        buttonText={"Crear"}
+        buttonText={isPosting ? "Creando..." : "Crear"}
         onClose={onClose}
         onSubmit={handleSubmit}
       >

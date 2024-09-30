@@ -62,10 +62,9 @@ function App() {
     api.getInitialCards().then((cards) => setCards(cards));
   }, []);
   //Borrar tarjetas
-  const handleConfirmDeleteCard = (e) => {
-    e.preventDefault();
+  const handleConfirmDeleteCard = () => {
     if (cardToDelete) {
-      api.deleteCard(cardToDelete?._id).then(() => {
+      return api.deleteCard(cardToDelete?._id).then(() => {
         setCards((state) => state.filter((c) => c._id !== cardToDelete._id));
         closeAllPopups();
       });
@@ -81,22 +80,22 @@ function App() {
     });
   }
   //Actualizar info perfil
-  const handleUpdateUser = ({ name, about }) => {
-    api.patchUserInfo(name, about).then((newUserInfo) => {
+  const handleUpdateUser = async ({ name, about }) => {
+    return await api.patchUserInfo(name, about).then((newUserInfo) => {
       setCurrentUser(newUserInfo);
       closeAllPopups();
     });
   };
   //Crear nueva tarjeta
-  const handleAddPlace = ({ name, url }) => {
-    api.postNewCard(name, url).then((newCard) => {
+  const handleAddPlace = async ({ name, url }) => {
+    return await api.postNewCard(name, url).then((newCard) => {
       setCards([newCard, ...cards]);
       closeAllPopups();
     });
   };
   //Actualizar avatar
-  const handleUpdateAvatar = ({ avatar }) => {
-    api.patchUserAvatar(avatar).then((newAvatar) => {
+  const handleUpdateAvatar = async ({ avatar }) => {
+    return await api.patchUserAvatar(avatar).then((newAvatar) => {
       setCurrentUser(newAvatar);
       closeAllPopups();
     });
@@ -143,7 +142,7 @@ function App() {
         <ConfirmDeleteCardPopup
           isOpen={isConfirmDeletePopupOpen}
           onClose={closeAllPopups}
-          handleSubmit={handleConfirmDeleteCard}
+          onConfirmDelete={handleConfirmDeleteCard}
         />
         <Footer />
       </CurrentUserContext.Provider>
