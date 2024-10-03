@@ -1,4 +1,4 @@
-# Tripleten web_project_around
+# Tripleten web_project_around_react
 
 # Proyecto realizado en el bootcamp de desarrollo web de Tripleten. Utiliza HTML, CSS, JS y React. El proyecto fue realizado en VSS (Visual Studio Code).
 
